@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix=":")
+bot = commands.Bot(command_prefix=".")
 
 @bot.event
 async def on_ready():
-    await client.change_presence(activity=discord.Game("with y'all"))
-    print(f'{client.user} has connected to discord!')
+    await bot.change_presence(activity=discord.Game("with y'all"))
+    print(f'{bot.user} has connected to discord!')
 
 @bot.command()
 async def ping(ctx):
