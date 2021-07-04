@@ -7,6 +7,7 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 from dateutil import tz
+import zoneinfo
 
 
 load_dotenv()
@@ -16,6 +17,8 @@ bot = commands.Bot(command_prefix=".")
 
 # regex for iso format
 iso = re.compile(r"\d{4}-\d\d-\d\d \d\d:\d\d")
+# list of supported timezones
+timezone_ls = zoneinfo.available_timezones()
 
 # commands that make sure bot is up and running
 @bot.event
@@ -39,8 +42,8 @@ async def echo(ctx, *args):
 # note: this needs YYYY-MM-DD HH:MM to be the input
 async def convert(ctx, f, t, time):
     formatstring = "%Y-%m-%d %H:%M"
-    if iso.match(time):
-        if "/" in f.lower():
+    if len(time) == 16 and iso.match(time):
+        if f in timezone_ls and t in timezone_ls:
             f_zone = tz.gettz(f)
             t_zone = tz.gettz(t)
 
@@ -53,7 +56,7 @@ async def convert(ctx, f, t, time):
         else:
             await ctx.channel.send("This command currently only supports timezones in the tz database.\nYou can find a list here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
     else:
-        await ctx.channel.send("Not sent in ISO format. Please use YYYY-MM-DD HH:MM for your time input.")
+        await ctx.channel.send("Not sent in ISO format. Please use **YYYY-MM-DD HH:MM** for your time input.")
 
 
 bot.run(TOKEN)
