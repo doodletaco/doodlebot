@@ -39,6 +39,10 @@ async def echo(ctx, *args):
     await ctx.channel.send(response)
 
 @bot.command()
+async def repo(ctx):
+    await ctx.channel.send("The repository for this bot is here: <https://github.com/doodletaco/doodlebot>")
+
+@bot.command()
 async def timezones(ctx):
     await ctx.channel.send("You can find a list of supported timezones here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
 
