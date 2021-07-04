@@ -39,6 +39,10 @@ async def echo(ctx, *args):
     await ctx.channel.send(response)
 
 @bot.command()
+async def timezones(ctx):
+    await ctx.channel.send("You can find a list of supported timezones here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
+
+@bot.command()
 # note: this needs YYYY-MM-DD HH:MM to be the input
 async def convert(ctx, f, t, time):
     formatstring = "%Y-%m-%d %H:%M"
