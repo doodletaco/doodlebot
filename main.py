@@ -1,5 +1,6 @@
 # This is a simple discord bot.
 import os
+import re
 from datetime import datetime
 
 import discord
@@ -12,6 +13,9 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix=".")
+
+# regex for iso format
+iso = re.compile(r"\d{4}-\d\d-\d\d \d\d:\d\d")
 
 # commands that make sure bot is up and running
 @bot.event
@@ -35,18 +39,21 @@ async def echo(ctx, *args):
 # note: this needs YYYY-MM-DD HH:MM to be the input
 async def convert(ctx, f, t, time):
     formatstring = "%Y-%m-%d %H:%M"
-    if "/" in f.lower():
-        f_zone = tz.gettz(f)
-        t_zone = tz.gettz(t)
+    if iso.match(time):
+        if "/" in f.lower():
+            f_zone = tz.gettz(f)
+            t_zone = tz.gettz(t)
 
-        f_time = datetime.strptime(time, formatstring)
-        f_time = f_time.replace(tzinfo=f_zone)
-        t_time = f_time.astimezone(t_zone)
+            f_time = datetime.strptime(time, formatstring)
+            f_time = f_time.replace(tzinfo=f_zone)
+            t_time = f_time.astimezone(t_zone)
 
-        await ctx.channel.send("Your converted time is: **" + t_time.strftime("%d %b %Y %H:%M") + "**")
+            await ctx.channel.send("Your converted time is: **" + t_time.strftime("%d %b %Y %H:%M") + "**")
 
+        else:
+            await ctx.channel.send("This command currently only supports timezones in the tz database.\nYou can find a list here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
     else:
-        await ctx.channel.send("This command currently only supports timezones in the tz database.\nYou can find a list here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
+        await ctx.channel.send("Not sent in ISO format. Please use YYYY-MM-DD HH:MM for your time input.")
 
 
 bot.run(TOKEN)
