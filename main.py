@@ -13,7 +13,7 @@ import zoneinfo
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix=".")
+bot = commands.Bot(command_prefix=">>")
 
 # regex for iso format
 iso = re.compile(r"\d{4}-\d\d-\d\d \d\d:\d\d")
