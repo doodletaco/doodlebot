@@ -1,7 +1,7 @@
 # This is a simple discord bot.
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import discord
 from dotenv import load_dotenv
@@ -45,6 +45,14 @@ async def repo(ctx):
 @bot.command()
 async def timezones(ctx):
     await ctx.channel.send("You can find a list of supported timezones here: <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>")
+
+@bot.command()
+async def jjwhatday(ctx):
+    cur_day = datetime.now()
+    days_future = timedelta(days=5687)
+    new_day = cur_day + days_future
+    day_str = new_day.strftime("%B %d, %Y %H:%M")
+    await ctx.channel.send(f"Today is **{day_str}**!")
 
 @bot.command()
 # note: this needs YYYY-MM-DD HH:MM to be the input
